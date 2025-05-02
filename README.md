@@ -7,8 +7,7 @@ If you have write access to vcenter (API isn't available in just ESXi) you can r
 
 ## Prep
 
-Due to the size of the NIOS image this may take some time depending on network latency.
-If you want to spin instances up and down, it's recommended you upload the instane to the datastore or use a template.
+First we need to upload the OVA file to the ESXi or vCenter box and make a template out of it - we'll then make clones of this for future deployments.
 
 Firstly create a file called "terraform.tfvars"
 
