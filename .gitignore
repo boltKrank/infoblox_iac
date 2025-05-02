@@ -36,8 +36,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-# The OVF file for installation
-OVF/**
-
-# The Vmware certificates
-certificates/**
+# The NIOS image directory
+/Images/**
