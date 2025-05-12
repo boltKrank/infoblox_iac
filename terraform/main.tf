@@ -75,4 +75,5 @@ resource "vsphere_virtual_machine" "vm" {
     size  = var.v_disk_size #Must be minimum for NIOS 150Gb or 500Gb
     thin_provisioned = true #Speeds things up and saves space if this is a temp deploy
   }
+
 }

@@ -43,7 +43,7 @@ v_memory_count =  //number
 
 v_os_guest_type = "" 
 
-v_disk_size =  //number
+v_disk_size =  //number needs to be 150Gb or 500Gb depending on the file used for the template
 
 v_host = ""
 
