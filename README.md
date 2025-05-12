@@ -7,6 +7,9 @@ If you have write access to vcenter (API isn't available in just ESXi) you can r
 
 ## Prep
 
+NOTE: this template needs 4 NICs.
+
+
 First we need to upload the OVA file to the ESXi or vCenter box and make a template out of it - we'll then make clones of this for future deployments.
 
 Firstly create a file called "terraform.tfvars"

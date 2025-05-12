@@ -21,13 +21,14 @@ data "vsphere_datastore" "datastore" {
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
 
+#VM Network
 data "vsphere_network" "network" {
   name          = var.v_network
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
 
-data "vsphere_virtual_machine" "ubuntu_template" {
-  name = "/${var.v_datacenter}/vm/${var.ubuntu_template_name}"
+data "vsphere_virtual_machine" "vm_template_name" {
+  name = "/${var.v_datacenter}/vm/${var.vm_template_name}"
   
 }
 
@@ -40,21 +41,38 @@ resource "vsphere_virtual_machine" "vm" {
   memory           = var.v_memory_count
   guest_id         = var.v_os_guest_type
   
+  #MGMT
   network_interface {
     network_id = data.vsphere_network.network.id
-  }
+  } 
+
+  #LAN1
+  network_interface {
+    network_id = data.vsphere_network.network.id
+  } 
+
+  #HA
+  network_interface {
+    network_id = data.vsphere_network.network.id
+  } 
+
+  #LAN2
+  network_interface {
+    network_id = data.vsphere_network.network.id
+  } 
   
+  #Disable network waits (workaround at the moment)
   wait_for_guest_net_timeout = -1
   wait_for_guest_ip_timeout  = -1
 
 
   clone {
-    template_uuid = data.vsphere_virtual_machine.vm_template_name.id
-    
+    template_uuid = data.vsphere_virtual_machine.vm_template_name.id    
   }
   
   disk {
     label = "disk0"
-    size  = var.v_disk_size
+    size  = var.v_disk_size #Must be minimum for NIOS 150Gb or 500Gb
+    thin_provisioned = true #Speeds things up and saves space if this is a temp deploy
   }
 }
