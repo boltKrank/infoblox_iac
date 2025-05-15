@@ -1,0 +1,33 @@
+provider "infoblox" { 
+     username = var.infoblox_username  
+     password = var.infoblox_password  
+     host     = var.infoblox_host  
+     version  = "2.11.0"
+}
+
+resource "infoblox_network" "example" {  
+    cidr        = "192.168.1.0/24"  
+    network_view = "default"  
+    comment     = "Example network"
+}
+
+resource "infoblox_record_a" "example" {  
+    name       = "example.com"  
+    ipv4addr   = "192.168.1.10"  
+    view       = "default"  
+    comment    = "Example A record"
+}
+
+resource "infoblox_record_ptr" "example" {  
+    ptrdname   = "example.com"  
+    ipv4addr   = "192.168.1.10"  
+    view       = "default"  
+    comment    = "Example PTR record"
+}
+
+resource "infoblox_fixed_address" "example" {  
+    ipv4addr   = "192.168.1.20"  
+    mac        = "00:11:22:33:44:55"  
+    network    = "192.168.1.0/24"  
+    comment    = "Example fixed address"
+}
