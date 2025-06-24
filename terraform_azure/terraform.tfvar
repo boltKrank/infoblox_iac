@@ -1,0 +1,4 @@
+resource_group_name = "DefaultResourceGroup-CAU"
+location            = "Australia Central"
+admin_username      = "sanderson1@infoblox.com"
+ssh_public_key_path = "~/.ssh/simon_azure.pub"

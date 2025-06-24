@@ -36,5 +36,8 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-# The NIOS image directory
-/Images/**
+# The key pair
+*.pem
+
+# The OVF tool
+**/ovftool
