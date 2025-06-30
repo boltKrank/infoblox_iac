@@ -1,0 +1,52 @@
+- name: Join grid member to Infoblox grid
+  hosts: grid_master
+  gather_facts: false
+  vars:
+    member_ip: "{{ hostvars['grid_member']['inventory_hostname'] }}"
+  tasks:
+    - name: Join Member to Grid using JOIN_GRID function
+      ansible.builtin.uri:
+        url: "https://{{ inventory_hostname }}/wapi/v2.10/member:JOIN_GRID"
+        method: POST
+        user: admin
+        password: Infoblox@312
+        validate_certs: false
+        body_format: json
+        body:
+          member_ip: "{{ member_ip }}"
+          name: "nios-member"
+          grid_name: "MyGrid"
+          grid_master: "{{ inventory_hostname }}"
+          grid_shared_secret: "Infoblox@312"
+      register: join_response
+      retries: 5
+      delay: 30
+      until: join_response.status == 200
+
+    - name: Save join response to file
+      ansible.builtin.copy:
+        content: "{{ join_response | to_nice_json }}"
+        dest: "logs/grid_member_join_response.json"
+        mode: '0644'
+
+    - name: Wait for member to become active in grid
+      ansible.builtin.uri:
+        url: "https://{{ inventory_hostname }}/wapi/v2.10/member?name=nios-member"
+        method: GET
+        user: admin
+        password: Infoblox@312
+        validate_certs: false
+      register: verify_member
+      retries: 10
+      delay: 15
+      until: verify_member.json[0].node_info[0].service_status == "RUNNING"
+
+    - name: Save verification response to file
+      ansible.builtin.copy:
+        content: "{{ verify_member | to_nice_json }}"
+        dest: "logs/grid_member_verification.json"
+        mode: '0644'
+
+    - name: Print join response
+      ansible.builtin.debug:
+        var: join_response

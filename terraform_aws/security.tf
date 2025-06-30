@@ -1,7 +1,7 @@
 resource "aws_security_group" "nios_sg" {
   name        = "${var.name_prefix}-nios-sg"
   description = "Allow Traffic for NIOS"
-  vpc_id      = aws_vpc.nios[0].id 
+  vpc_id      = aws_vpc.nios.id 
 
   ingress {
     description = "SSH from Internet"

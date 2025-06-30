@@ -1,0 +1,15 @@
+- hosts: grid_master
+  gather_facts: no
+  tasks:
+    - name: Create Infoblox Grid
+      uri:
+        url: "https://{{ inventory_hostname }}/wapi/v2.10/grid"
+        method: POST
+        user: admin
+        password: Infoblox@312
+        validate_certs: no
+        body_format: json
+        body:
+          name: "MyGrid"
+          admin_password: "Infoblox@312"
+      register: grid_create

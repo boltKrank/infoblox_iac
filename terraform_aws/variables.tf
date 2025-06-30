@@ -15,6 +15,12 @@ variable "nios_key_pair" {
   default     = "NIOS_key"
 }
 
+variable "grid_name" {
+  description = "The name of the NIOS Grid"
+  type        = string
+  default     = "Infoblox-Grid"
+  
+}
 
 variable "nios_vpc_security_group_ids" {
   type    = list(string)
@@ -135,4 +141,10 @@ variable "custom_tags" {
   description = "Custom tags added to AWS Resources created by the module"
   type        = map(string)
   default     = {}
+}
+
+variable "grid_shared_secret" {
+  description = "The shared secret for the NIOS Grid"
+  type        = string
+  default     = "test"  
 }
