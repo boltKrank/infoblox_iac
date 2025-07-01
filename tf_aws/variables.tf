@@ -13,9 +13,10 @@ variable "grid_master_instance_type" {
 variable "grid_member_instance_type" {
   description = "The instance type for the Grid Member EC2 instance."
   type        = string
-  default     = "m5.large"
+  default     = "m5.large"    
   
 }
+
 
 variable "nios_ami_id" {
   description = "The AMI ID for NIOS in the ap-southeast-2 region."
