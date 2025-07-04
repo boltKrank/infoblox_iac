@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.sourceforge.net/">
+<head>
+        <title>Page Not Found</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="./errorPage/globalerror.css">
+</head>
+    <body>
+             <div id="errorpage">
+                        <div id="errorheader"><img src="./errorPage/ib_logo.png" alt="infoblox" /></div>
+
+                        <div id="errortype">
+                                <div id="errortitle"><h2><label>Page Not Found</label></h2></div>
+                        </div>
+                        <div class="ib-error-message">
+                                <h3><br><br><label>Please enter a valid URL and try again. Contact Infoblox Technical Support if the problem persists.</label></h3>
+                        </div>
+                </div>
+
+     </body>
+</html>

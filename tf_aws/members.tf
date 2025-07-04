@@ -3,7 +3,8 @@
 locals {
  # Skip members (until grid naming is fixed)
  #  members = ["member01", "member02"]
-  members = []
+   members = []
+ # members = ["grid-member-01"]
 }
 
 resource "aws_network_interface" "private_member_nics" {
@@ -68,16 +69,22 @@ resource "aws_instance" "member_instances" {
     Name = each.key
   }
 
+#TODO: TOKEN AND CERTIFICATE
+
     user_data = <<EOF
 #infoblox-config
-grid_name: "demogrid"
-grid_shared_secret: "test"
-set_grid_master: false
-grid_master: "${aws_instance.grid_master.private_ip}"
+temp_license: nios IB-V825 enterprise dns dhcp
 remote_console_enabled: y
-hostname: "gm01"
 default_admin_password: "Infoblox@312"
-temp_license: dns dhcp enterprise nios IB-V825
+
+lan1:
+  v4_addr: "10.32.2.10" # Adjusted for each member instance
+  v4_netmask: "255.255.255.0""
+  v4_gw: "10.32.2.1"
+gridmaster:
+  ip_addr: ${aws_instance.grid_master.private_ip}
+  token: <join token>
+  certificate: <grid_master’s certificate>
 EOF
 
 

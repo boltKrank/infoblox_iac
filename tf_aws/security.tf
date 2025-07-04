@@ -37,12 +37,32 @@ resource "aws_security_group" "instance_sg" {
     protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
 
   ingress {
     from_port   = 2114
     to_port     = 2114
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  
+  }
+
+    ingress {
+    from_port   = 1194
+    to_port     = 1194
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  
+  }
+
+    ingress {
+    from_port   = 67
+    to_port     = 67
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]  
+  }
+
+    ingress {
+    from_port   = 68
+    to_port     = 68
+    protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]  
   }
 

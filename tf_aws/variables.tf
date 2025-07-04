@@ -17,7 +17,7 @@ variable "grid_member_instance_type" {
   
 }
 
-
+  
 variable "nios_ami_id" {
   description = "The AMI ID for NIOS in the ap-southeast-2 region."
   type        = string

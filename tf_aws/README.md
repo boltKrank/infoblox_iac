@@ -45,3 +45,26 @@ domain_name: "infra.example.com"
 syslog_servers: "10.0.0.50:514"
 snmp_enable: true
 snmp_community: "public"
+
+
+### user_data example:
+
+
+#infoblox-config
+temp_license: nios IB-V926 enterprise dns dhcp
+remote_console_enabled: y
+
+lan1:
+  v4_addr: <ip_address>
+  v4_netmask: <subnet_mask>
+  v4_gw: <gateway_ip>
+gridmaster:
+  ip_addr: <grid_master’s VIP>
+  token: <join token>
+  certificate: <grid_master’s certificate>
+
+  See: https://docs.infoblox.com/space/OCDeployGuide/143295611/Preparing+the+NetMRI+VM+Configuration+File
+
+  https://docs.infoblox.com/space/NKHOIG/35882919/Provisioning+the+Grid+Master+and+Grid+Members
+
+  
