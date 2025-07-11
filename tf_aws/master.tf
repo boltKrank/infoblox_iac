@@ -134,9 +134,13 @@ resource "null_resource" "renaming_grid_master" {
     #Renaming the grid master
 
     echo "Renaming Grid Master..."
-    REF=$(curl -sk -u admin:Infoblox@312 https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.12/member | jq -r '.[0]._ref')
+    # REF=$(curl -sk -u admin:Infoblox@312 https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.12/member|jq -r '.[0]._ref')
+
+    REF=$(curl -k -u admin:Infoblox@312 "https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.12/member" |jq -r '.[] | select(.host_name == "infoblox.localdomain") | ._ref')
     
-    curl -sk -u admin:Infoblox@312 -X PUT \
+    echo "The GM's REF is $REF" 
+
+    curl -k -u admin:Infoblox@312 -X PUT \
       "https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.10/$REF" \
       -H "Content-Type: application/json" \
       -d '{"host_name": "grid-master-01"}'
