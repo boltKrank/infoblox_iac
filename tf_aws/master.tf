@@ -1,57 +1,98 @@
 # 5. EC2 instance with two NICs
 
+
+resource "aws_network_interface" "mgmt_nic" {
+  subnet_id       = aws_subnet.mgmt_subnet.id
+  security_groups = [aws_security_group.nios_security_group.id]
+
+  # Specify the private IP address for the MGMT NIC
+  private_ips      = [var.grid_master_mgmt_private_ip]
+  # Ensure the MGMT NIC is created before the EIP
+  depends_on = [aws_subnet.mgmt_subnet] 
+
+  tags = {
+    Name = "master-mgmt-nic0"
+  }
+
+}
+
+# EIP for Grid Master MGMT NIC
+/*
+resource "aws_eip" "grid_master_mgmt_eip" {
+  network_interface = aws_network_interface.mgmt_nic.id
+  depends_on = [ aws_network_interface.mgmt_nic ] # Ensure MGMT NIC is created before EIP
+
+  tags = {
+    Name = "grid-master-mgmt-eip"
+  }
+}
+*/
+
+# NIOS Grid LAN1 NIC (this is used for SSH)
+resource "aws_network_interface" "lan1_nic" {
+  subnet_id       = aws_subnet.lan1_subnet.id
+  security_groups = [aws_security_group.nios_security_group.id]
+
+  # Specify the private IP address for the LAN1 NIC
+  private_ips      = [var.grid_master_lan1_private_ip]
+
+  tags = {
+    Name = "master-lan1-nic1"
+  }
+}
+
+# EIP for Grid Master LAN1 NIC
+resource "aws_eip" "grid_master_lan1_eip" {
+
+  network_interface = aws_network_interface.lan1_nic.id 
+  depends_on = [ aws_network_interface.lan1_nic ]
+  
+  tags = {
+    Name = "grid-master-eip"
+  }
+}
+
+
 # NIOS Grid_Master
 resource "aws_instance" "grid_master" {
   ami           = var.nios_ami_id
   instance_type = var.grid_master_instance_type
   key_name      = var.key_name
+  
 
-
-  lifecycle {
-    ignore_changes = [ tags ]
-  }
-
+  # Primary (eth0) MGMT NIC
   network_interface {
-    network_interface_id = aws_network_interface.private_eni.id
+    network_interface_id = aws_network_interface.mgmt_nic.id
     device_index         = 0
   }
 
+  # Secondary (eth1) LAN1 NIC
   network_interface {
+    network_interface_id = aws_network_interface.lan1_nic.id
     device_index         = 1
-    network_interface_id = aws_network_interface.public_eni.id
   }
 
-  
 
   tags = {
     Name = "grid-master"
   }
 
 
-/*
-user_data = <<EOF
-#infoblox-config
-set_grid_master: true
-grid_name: "demogrid"
-grid_shared_secret: "test"
-remote_console_enabled: y
-default_admin_password: "Infoblox@312"
-temp_license: dns dhcp enterprise nios IB-V825
-EOF
-*/
 
-user_data = <<EOF
-#infoblox-config
-set_grid_master: true
-grid_name: "demogrid"
-grid_shared_secret: "test"
-temp_license: nios IB-V825 enterprise dns dhcp
-default_admin_password: "Infoblox@312"
+# Testing info from here https://docs.infoblox.com/space/DeploymentGuidevNIOSforAWS/736395530/Deploy+vNIOS+Instance+in+AWS#Deploy-From-Marketplace
+
+  user_data = <<EOF
+#infoblox-config 
 remote_console_enabled: y
-gridmaster:
+default_admin_password: ${var.default_admin_password}
+temp_license: enterprise dns dhcp cloud vnios nios IB-V825
+set_grid_master: true
+host_name: "grid-master-01"
+grid_name: "demo-grid"
+accept_eula: true
 EOF
 
-
+  # Waiting for EC2 instance to be ready
   provisioner "local-exec" {
     command = <<EOT
       echo "Waiting for EC2 status checks to pass..."
@@ -62,52 +103,12 @@ EOF
           echo "Instance status check passed."
           break
         fi
-        echo "Still waiting..."
+        echo "Still waiting for AWS Checks 3/3..."
         sleep 30
       done
     EOT
   }
 
-  # TODO: local-exec: WAPI to instantiate the Grid. ??? if user_data is sufficient.
 
 
 }
-/*
-# Download certificate and token from the Grid Master
-
-resource "null_resource" "get_grid_cert" {
-  depends_on = [aws_instance.grid_master]
-
-  # Get Grid certificate and token after the instance is up
-
-  # Certificate download
-  provisioner "local-exec" {
-    command = <<EOT
-      echo "Waiting for GM to come online..."
-      for i in {1..30}; do
-        if curl -sk --connect-timeout 5 https://${aws_instance.grid_master.public_ip}/wapidoc/ > /dev/null; then
-          break
-        fi
-        sleep 10
-      done
-      curl -sk https://${aws_instance.grid_master.public_ip}/infoblox.crt -o ./grid_master.crt
-    EOT
-  }
-
-  # Token download
-    provisioner "local-exec" {
-    command = <<EOT
-      curl -k -u admin:Infoblox@312 -X POST \
-        https://${aws_instance.grid_master.public_ip}/wapi/v2.10/grid?_function=generate_token \
-        -H "Content-Type: application/json" \
-        -o grid_join_token.json
-    EOT
-  }
-
-
-  triggers = {
-    gm_ip = aws_instance.grid_master.public_ip
-  }
-}
-
-*/

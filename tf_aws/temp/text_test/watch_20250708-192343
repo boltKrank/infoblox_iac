@@ -1,0 +1,40 @@
+Every 5.0s: aws ec2 get-console-output --instance-id i-0a290b339a6de7848 --query Output --output text                      IB-L9RT9734D1: 19:23:42
+                                                                                                                                     in 0.879s (0)
+kernel.hung_task_panic = 0                                                                                                                        
+Scanning host*.../init: line 211: can't create /sys/class/scsi_host/host*/scan: nonexistent directory                                             
+Done                                                                                                                                              
+root is LABEL=root1 /dev/nvme0n1p1                                                                                                                
+fsck time                                                                                                                                         
+e2fsck 1.46.4 (18-Aug-2021)                                                                                                                       
+root1: clean, 16278/524288 files, 303055/2097152 blocks                                                                                           
+/dev/nvme0n1p5                                                                                                                                    
+storage is LABEL=storage1 /dev/nvme0n1p5                                                                                                          
+e2fsck 1.46.4 (18-Aug-2021)                                                                                                                       
+storage1: clean, 95250/15007744 files, 3430270/60030720 blocks                                                                                    
+ext4 set to writeback on /dev/nvme0n1p5                                                                                                           
+ext4 set to writeback on /dev/nvme0n1p1                                                                                                           
+ext4 set to writeback on /dev/nvme0n1p1                                                                                                           
+                                                                                                                                                  
+   OpenRC 0.44.7.86e4642bdd is starting up Linux 5.15.0-113-generic (x86_64)                                                                      
+                                                                                                                                                  
+ * /proc is already mounted                                                                                                                       
+ * Mounting /run ... * /run/openrc: creating directory                                                                                            
+ * /run/lock: creating directory                                                                                                                  
+ * /run/lock: correcting owner                                                                                                                    
+ * Caching service dependencies ... [ ok ]                                                                                                        
+ * Mounting security filesystem ... [ ok ]                                                                                                        
+ * Mounting debug filesystem ... [ ok ]                                                                                                           
+ * Mounting config filesystem ... [ ok ]                                                                                                          
+ * Mounting fuse control filesystem ... [ ok ]                                                                                                    
+ * Mounting persistent storage (pstore) filesystem ... [ ok ]                                                                                     
+ * Remounting devtmpfs on /dev ... [ ok ]                                                                                                         
+ * Mounting /dev/mqueue ... [ ok ]                                                                                                                
+ * Mounting /dev/pts ... [ ok ]                                                                                                                   
+ * Mounting /dev/shm ... [ ok ]                                                                                                                   
+ * Starting busybox mdev ... [ ok ]                                                                                                               
+ * FSCK already done ... [ ok ]                                                                                                                   
+ * Root already mounted ... [ ok ]                                                                                                                
+ * LOCAL mounts already done ... [ ok ]                                                                                                           
+ * Starting busybox acpid ... [ ok ]                                                                                                              
+ * Mounting cgroup filesystem ... [ ok ]                                                                                                          
+ * NIOS doing console                                                                                                                             

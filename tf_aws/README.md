@@ -63,8 +63,15 @@ gridmaster:
   token: <join token>
   certificate: <grid_master’s certificate>
 
+BYOL:
+
+https://docs.infoblox.com/space/NAIG/37650793
+
+
+
+
   See: https://docs.infoblox.com/space/OCDeployGuide/143295611/Preparing+the+NetMRI+VM+Configuration+File
 
   https://docs.infoblox.com/space/NKHOIG/35882919/Provisioning+the+Grid+Master+and+Grid+Members
 
-  
+  https://docs.infoblox.com/space/NAIG/37585115/About+Infoblox+vNIOS+for+AWS
