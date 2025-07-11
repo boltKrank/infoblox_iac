@@ -112,3 +112,41 @@ EOF
 
 
 }
+
+# Rename grid master
+resource "null_resource" "renaming_grid_master" {
+
+  depends_on = [ aws_instance.grid_master ]
+
+  provisioner "local-exec" {
+    command = <<EOT
+    echo "Waiting for Grid Master's API to come online"
+
+    for i in {1..30}; do
+      if curl -sk --connect-timeout 2 https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.12/grid >/dev/null; then
+        echo "Grid master API is up."
+        break
+      fi
+      echo "Still waiting... attempt $i"
+      sleep 10
+    done
+
+    #Renaming the grid master
+
+    echo "Renaming Grid Master..."
+    REF=$(curl -sk -u admin:Infoblox@312 https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.12/member | jq -r '.[0]._ref')
+    
+    curl -sk -u admin:Infoblox@312 -X PUT \
+      "https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.10/$REF" \
+      -H "Content-Type: application/json" \
+      -d '{"host_name": "grid-master-01"}'
+    EOT
+
+  }
+
+  triggers = {
+    instance_id = aws_instance.grid_master.id
+  }
+
+
+}
