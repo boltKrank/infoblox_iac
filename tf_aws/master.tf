@@ -143,7 +143,7 @@ resource "null_resource" "renaming_grid_master" {
     curl -k -u admin:Infoblox@312 -X PUT \
       "https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.10/$REF" \
       -H "Content-Type: application/json" \
-      -d '{"host_name": "grid-master-01"}'
+      -d '{"host_name": "grid-master-01.localdomain"}'
     EOT
 
   }
