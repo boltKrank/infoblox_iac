@@ -53,3 +53,8 @@ variable "default_admin_password" {
 variable "members" {
   default = ["member01"]
 }
+
+variable "default_fqdn" {
+  description = "The default fqdn for NIOS"
+  default = "infoblox.localdomain"
+}

@@ -1,0 +1,4 @@
+#infoblox-config 
+remote_console_enabled: y
+temp_license: enterprise dns dhcp cloud vnios nios IB-V825
+set_grid_master: true

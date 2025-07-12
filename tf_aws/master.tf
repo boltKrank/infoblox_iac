@@ -136,7 +136,7 @@ resource "null_resource" "renaming_grid_master" {
     echo "Renaming Grid Master..."
     # REF=$(curl -sk -u admin:Infoblox@312 https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.12/member|jq -r '.[0]._ref')
 
-    REF=$(curl -k -u admin:Infoblox@312 "https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.12/member" |jq -r '.[] | select(.host_name == "infoblox.localdomain") | ._ref')
+    REF=$(curl -k -u admin:Infoblox@312 "https://${aws_eip.grid_master_lan1_eip.public_ip}/wapi/v2.12/member" |jq -r '.[] | select(.host_name == "${var.default_fqdn}") | ._ref')
     
     echo "The GM's REF is $REF" 
 
