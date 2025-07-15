@@ -19,8 +19,16 @@ variable "lan1_subnet_cidr" {
   default = ["10.32.2.0/24"]
 }
 
-variable "nios_private_ip" {
-  default = "10.0.1.10"
+variable "mgmt_nic_private_ip" {
+  default = "10.32.1.10"
+}
+
+variable "lan1_nic_private_ip" {
+  default = "10.32.2.10"
+}
+
+variable "public_key" {
+  
 }
 
 variable "vm_size" {
@@ -52,4 +60,17 @@ variable "image_offer_name" {
 
 variable "image_sku_name" {
   description = "The name of SKU for the VM image"
+}
+
+variable "image_version" {
+  description = "Version of image used"
+  default = "latest"
+}
+
+variable "master_size_type" {
+  default = "Standard_D2s_v3"
+}
+
+variable "default_admin_password" {
+  default = "Infoblox@312"
 }

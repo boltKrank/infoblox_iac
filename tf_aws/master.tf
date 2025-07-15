@@ -81,15 +81,17 @@ resource "aws_instance" "grid_master" {
 
 # Testing info from here https://docs.infoblox.com/space/DeploymentGuidevNIOSforAWS/736395530/Deploy+vNIOS+Instance+in+AWS#Deploy-From-Marketplace
 
+# Raise RFE for grid_name. host_name
+
   user_data = <<EOF
 #infoblox-config 
 remote_console_enabled: y
 default_admin_password: ${var.default_admin_password}
-temp_license: enterprise dns dhcp cloud vnios nios IB-V825
-set_grid_master: true
-host_name: "grid-master-01"
-grid_name: "demo-grid"
-accept_eula: true
+temp_license: enterprise dns dhcp cloud nios IB-V825
+set_grid_master: true.  # FAIL
+host_name: "grid-master-01" # FAIL
+grid_name: "demo-grid" # FAIL
+accept_eula: true #FAIL 
 EOF
 
   # Waiting for EC2 instance to be ready
